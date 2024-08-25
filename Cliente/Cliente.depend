@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1694616286 source:c:\users\tomas\onedrive\documentos\redes y comunicaciones\cliente\cliente.cpp
+	<iostream>
+	<string.h>
+	<cstring>
+	<winsock2.h>
+
+1724597141 source:c:\users\tomas\onedrive\documentos\redes y comunicaciones 2022 y 2023\cliente\cliente.cpp
+	<iostream>
+	<cstring>
+	<winsock2.h>
+	<ws2tcpip.h>
+
