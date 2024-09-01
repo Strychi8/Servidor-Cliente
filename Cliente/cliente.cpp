@@ -20,8 +20,8 @@ int obtenerOpcion() {
     int opcion;
     cin >> opcion;
     while (cin.fail() || (opcion < 1 || opcion > 3)) {
-        cin.clear(); // Limpia el estado de error de cin
-        cin.ignore(INT_MAX, '\n'); // Descarta la entrada incorrecta
+        cin.clear(); //Limpia el estado de error de cin
+        cin.ignore(INT_MAX, '\n'); //Descarta la entrada incorrecta
         cout << "\nOpción no valida, por favor ingrese un numero entre 1 y 3: ";
         cin >> opcion;
     }
@@ -56,7 +56,7 @@ int main() {
     char buffer[MAX_BUFFER] = {0};
     char respuesta[MAX_BUFFER] = {0};
 
-    // Inicializar Winsock
+    //Inicializar Winsock
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         cerr << "Error al inicializar Winsock" << endl;
         return 1;
@@ -71,7 +71,7 @@ int main() {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
 
-    // Convertir direcciones IPv4 e IPv6 de texto a binario
+    //Convertir direcciones IPv4 e IPv6 de texto a binario
     serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     if (serv_addr.sin_addr.s_addr == INADDR_NONE) {
         cerr << "Direccion IP no valida" << endl;
@@ -94,7 +94,7 @@ int main() {
         opcion = obtenerOpcion();
 
         switch(opcion){
-          case 1: // Generar nombre de usuario
+          case 1: //Generar nombre de usuario
            {
              string tipo = "nombre de usuario";
              int longitud = obtenerLongitud(tipo);
@@ -107,7 +107,7 @@ int main() {
 
            } break;
 
-          case 2: // Generar contrasenia
+          case 2: //Generar contraseña
              {
              string tipo = "contrasenia";
              int longitud = obtenerLongitud(tipo);
@@ -119,10 +119,10 @@ int main() {
              cout << "Respuesta generada del servidor: " << respuesta << endl;
              } break;
 
-          case 3: // Salir
+          case 3: //Salir
             cout << "Saliendo..." << endl; break;
 
-          default: // Opcion no valida
+          default: //Opcion no valida
             cout << "Opcion no valida, por favor seleccione una opcion entre 1 y 3." << endl; break;
 
         }

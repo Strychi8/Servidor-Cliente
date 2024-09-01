@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// Función para generar un nombre de usuario
+//Función para generar un nombre de usuario
 string generarNombreUsuario(int longitud) {
     if (longitud < 5 || longitud > 15) {
         return "Error: La longitud del nombre de usuario debe estar entre 5 y 15 caracteres";
@@ -20,7 +20,7 @@ string generarNombreUsuario(int longitud) {
     string consonantes = "bcdfghjklmnpqrstvwxyz";
     string resultado = " ";
 
-    bool esVocal = rand() % 2; // 0 = empieza con consonante, 1 = empieza con vocal
+    bool esVocal = rand() % 2; //0 = empieza con consonante, 1 = empieza con vocal
 
     for (int i = 0; i < longitud; i++) {
         if (esVocal) {
@@ -28,13 +28,13 @@ string generarNombreUsuario(int longitud) {
         } else {
             resultado += consonantes[rand() % consonantes.length()];
         }
-        esVocal = !esVocal; // Alterna entre vocal y consonante
+        esVocal = !esVocal; //Alterna entre vocal y consonante
     }
 
     return resultado;
 }
 
-// Función para generar una contraseña
+//Función para generar una contraseña
 string generarContrasena(int longitud) {
     if (longitud < 8 || longitud > 50) {
         return "Error: La longitud de la contrasenia debe estar entre 8 y 50 caracteres";
@@ -58,26 +58,25 @@ int main() {
     char buffer[MAX_BUFFER] = {0};
     char respuesta[MAX_BUFFER] = {0};
 
-
-    // Inicializar Winsock
+    //Inicializar Winsock
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         cerr << "Error al inicializar Winsock" << endl;
         return 1;
     }
 
-    // Crear el socket
+    //Crear el socket
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
         cerr << "Error al crear el socket" << endl;
         WSACleanup();
         return 1;
     }
 
-    // Configurar la estructura de la dirección del servidor
+    //Configurar la estructura de la dirección del servidor
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(PORT);
 
-    // Asociar el socket al puerto
+    //Asociar el socket al puerto
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
         cerr << "Error en bind" << endl;
         closesocket(server_fd);
@@ -85,7 +84,7 @@ int main() {
         return 1;
     }
 
-    // Poner el socket en modo de escucha
+    //Poner el socket en modo de escucha
     if (listen(server_fd, 3) < 0) {
         cerr << "Error en listen" << endl;
         closesocket(server_fd);
@@ -111,16 +110,12 @@ int main() {
             continue;
         }
 
-        //string opcion(buffer,valread);
-
-        // Procesar la solicitud
-        char tipoSolicitud ;//= opcion[0];
-        int longitud; //= stoi(opcion.substr(2));
+        //Procesar la solicitud
+        char tipoSolicitud ;
+        int longitud;
 
         string respuesta;
-        //respuesta.clear(); //Limpiar la respuesta
         sscanf(buffer, "%c %d", &tipoSolicitud, &longitud);
-
 
         if (tipoSolicitud == 'U') {
             respuesta = generarNombreUsuario(longitud);
@@ -130,7 +125,7 @@ int main() {
             respuesta = "Error: Opcion no valida";
         }
 
-        // Enviar la respuesta al cliente
+        //Enviar la respuesta al cliente
         send(new_socket, respuesta.c_str(), respuesta.length(), 0);
 
         closesocket(new_socket);

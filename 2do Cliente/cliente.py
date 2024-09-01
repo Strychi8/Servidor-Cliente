@@ -1,47 +1,70 @@
 import socket
 
+PORT = 8080
+MAX_BUFFER = 1024
+
 def mostrar_menu():
-    print("\nSeleccione una opcion:")
+    print("\nSeleccione una opcion:\n")
     print("1. Generar nombre de usuario")
-    print("2. Generar contrasenia")
+    print("2. Generar contraseña")
     print("3. Salir")
-    return int(input("Opción: "))
+    return int(input("\nOpcion: "))
+
+def obtener_opcion():
+    while True:
+        try:
+            opcion = int(input())
+            if 1 <= opcion <= 3:
+                return opcion
+            else:
+                print("\nOpción no válida, por favor ingrese un número entre 1 y 3: ")
+        except ValueError:
+            print("\nOpción no válida, por favor ingrese un número entre 1 y 3: ")
 
 def obtener_longitud(tipo):
     while True:
         try:
             longitud = int(input(f"Ingrese la longitud deseada para {tipo}: "))
-            if (tipo == "nombre de usuario" and (longitud < 5 or longitud > 15)) or \
-               (tipo == "contrasenia" and (longitud < 8 or longitud > 50)):
-                print("Longitud no válida. Intente nuevamente.")
-            else:
+            if (tipo == "nombre de usuario" and 5 <= longitud <= 15) or (tipo == "contraseña" and 8 <= longitud <= 50):
                 return longitud
+            else:
+                print("\nLongitud no válida. Intente nuevamente.")
         except ValueError:
-            print("Entrada no válida. Por favor ingrese un número.")
+            print("\nEntrada no válida. Por favor ingrese un número.")
 
 def main():
-    server_address = ('127.0.0.1', 8080)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect(server_address)
+    try:
+        sock.connect(("127.0.0.1", PORT))
+    except socket.error as e:
+        print(f"Error al conectar con el servidor: {e}")
+        return
 
-        while True:
-            opcion = mostrar_menu()
+    opcion = 0
 
-            if opcion == 3:
-                print("Saliendo...")
-                break
+    while opcion != 3:
+        mostrar_menu()
+        opcion = obtener_opcion()
 
-            tipo = "nombre de usuario" if opcion == 1 else "contrasenia"
+        if opcion == 1:  # Generar nombre de usuario
+            tipo = "nombre de usuario"
             longitud = obtener_longitud(tipo)
+            mensaje = f'U {longitud}'.encode()
+        elif opcion == 2:  # Generar contraseña
+            tipo = "contraseña"
+            longitud = obtener_longitud(tipo)
+            mensaje = f'P {longitud}'.encode()
+        else:  # Salir
+            print("Saliendo...")
+            break
 
-            # Enviar solicitud al servidor
-            mensaje = f"{'U' if opcion == 1 else 'P'} {longitud}"
-            sock.sendall(mensaje.encode('utf-8'))
-
-            # Recibir respuesta del servidor
-            respuesta = sock.recv(1024).decode('utf-8')
+        if opcion in [1, 2]:
+            sock.sendall(mensaje)
+            respuesta = sock.recv(MAX_BUFFER).decode()
             print(f"Respuesta generada del servidor: {respuesta}")
 
-if __name__ == "_main_":
+    sock.close()
+
+if __name__ == "__main__":
     main()

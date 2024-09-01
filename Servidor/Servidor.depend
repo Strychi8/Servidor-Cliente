@@ -11,3 +11,11 @@
 	<cstring>
 	<ctime>
 
+1724599389 source:c:\users\tomas\onedrive\documentos\redes y comunicaciones 2022 y 2023\servidor-cliente\servidor\servidor.cpp
+	<iostream>
+	<cstdlib>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<cstring>
+	<ctime>
+
